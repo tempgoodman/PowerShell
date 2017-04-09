@@ -1,0 +1,31 @@
+for ( $i = 0; $i -lt $args.count; $i++ ) {
+    if ($args[ $i ] -eq "-s"){ $strSource=$args[ $i+1 ]}
+}
+$time = Get-Date -format g
+$DateStr = Get-Date -format yyyyMMddhhmmssff
+
+$filename = "C:\ArchiveScript\DeleteO2O_log\" + $DateStr +".log"
+
+ $time +" Start script `r"   > $filename
+
+$time +" Source = "+$strSource+" `r"   >> $filename
+
+$count = ( Get-ChildItem $strSource | Measure-Object ).Count;
+$time = Get-Date -format g 
+
+$loopcount  = 1
+
+
+
+ $time+ " Number of file in Source Folder "+$strSource+" = "+$count +"`r"  >> $filename
+
+	
+	Get-ChildItem -Path $strSource | Where{$_.LastWriteTime -lt (Get-Date).AddDays(-0.25)}| ForEach-Object {
+                Remove-Item $_.FullName
+		      $time +" "+  $loopcount +" Deleted "+$_.FullName +"`r" >> $filename
+			$loopcount = $loopcount + 1
+        $time = Get-Date -format g 
+		}	
+	
+
+ "------------------------------------------- `r" >> $filename
