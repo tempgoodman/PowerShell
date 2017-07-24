@@ -22,3 +22,7 @@ select SERVERPROPERTY(N'servername')
 
 sp_addserver 'LDTECHDB01\MSSQLSERVER2', 'local'
 
+USE master
+GO
+xp_readerrorlog 0, 1, N'Server is listening on' 
+GO
